@@ -1,5 +1,4 @@
 import enum
-
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, Enum, ForeignKey, Float, Text
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -13,11 +12,22 @@ class User(Base):
     gender = Column(String, nullable=False)
     age = Column(Integer, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
+    is_verified = Column(Boolean, nullable=False, default=False)
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     # Relationships
     orders = relationship("Order", back_populates="user")
+
+    def __init__(self, full_name, gender, age, email, is_verified, hashed_password):
+        self.full_name = full_name
+        self.gender = gender
+        self.age = age
+        self.email = email
+        self.is_verified = is_verified
+        self.hashed_password = hashed_password
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
 
 
 class Operator(Base):
@@ -31,7 +41,8 @@ class Operator(Base):
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
+    # Relationships
+    restaurants = relationship("Restaurant", back_populates="owner")
 
 
 class Restaurant(Base):
@@ -45,6 +56,9 @@ class Restaurant(Base):
     views = Column(Integer, nullable=False)
     scans = Column(Integer, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    # Relationships
+    owner = relationship("Operator", back_populates="restaurants")
+    orders = relationship("Order", back_populates="restaurant")
 
 
 class Category(Base):
@@ -53,6 +67,8 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True, nullable=False)
     icon = Column(String, nullable=False)
+    # Relationships
+    menu_items = relationship("Meal", back_populates="category")
 
 
 class Meal(Base):
@@ -66,6 +82,7 @@ class Meal(Base):
 
     # Relationships
     category = relationship("Category", back_populates="menu_items")
+    order_items = relationship("OrderItem", back_populates="menu_item")
 
 
 class OrderStatus(str, enum.Enum):
@@ -86,6 +103,7 @@ class Order(Base):
 
     # Relationships
     user = relationship("User", back_populates="orders")
+    restaurant = relationship("Restaurant", back_populates="orders")
     order_items = relationship("OrderItem", back_populates="order", cascade="all, delete-orphan")
 
 
@@ -99,9 +117,8 @@ class OrderItem(Base):
     price = Column(Float, nullable=False)
 
     # Relationships
-    order = relationship("Order", back_populates="order_item")
-    menu_item = relationship("Meal", back_populates="order_item")
-
+    order = relationship("Order", back_populates="order_items")
+    menu_item = relationship("Meal", back_populates="order_items")
 
 
 class PaymentStatus(str, enum.Enum):

@@ -1,1 +1,1 @@
-from app.routers import auth, menu, orders
+from app.routers import auth
