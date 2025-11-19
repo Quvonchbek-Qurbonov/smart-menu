@@ -1,0 +1,76 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="alembic" />
+          <option value="aniso8601" />
+          <option value="attrs" />
+          <option value="babel" />
+          <option value="banal" />
+          <option value="bcrypt" />
+          <option value="boto3" />
+          <option value="botocore" />
+          <option value="cachelib" />
+          <option value="certifi" />
+          <option value="cffi" />
+          <option value="charset-normalizer" />
+          <option value="click" />
+          <option value="cmarkgfm" />
+          <option value="cryptography" />
+          <option value="dataset" />
+          <option value="flask" />
+          <option value="flask-babel" />
+          <option value="flask-caching" />
+          <option value="flask-marshmallow" />
+          <option value="flask-migrate" />
+          <option value="flask-restx" />
+          <option value="flask-script" />
+          <option value="flask-sqlalchemy" />
+          <option value="freezegun" />
+          <option value="gevent" />
+          <option value="greenlet" />
+          <option value="gunicorn" />
+          <option value="idna" />
+          <option value="itsdangerous" />
+          <option value="jinja2" />
+          <option value="jmespath" />
+          <option value="jsonschema" />
+          <option value="mako" />
+          <option value="markupsafe" />
+          <option value="marshmallow" />
+          <option value="marshmallow-sqlalchemy" />
+          <option value="maxminddb" />
+          <option value="nh3" />
+          <option value="packaging" />
+          <option value="passlib" />
+          <option value="pillow" />
+          <option value="pycparser" />
+          <option value="pydantic" />
+          <option value="pymysql" />
+          <option value="pyrsistent" />
+          <option value="python-dateutil" />
+          <option value="python-dotenv" />
+          <option value="python-editor" />
+          <option value="python-geoacumen-city" />
+          <option value="pytz" />
+          <option value="redis" />
+          <option value="requests" />
+          <option value="s3transfer" />
+          <option value="six" />
+          <option value="sqlalchemy" />
+          <option value="sqlalchemy-utils" />
+          <option value="tenacity" />
+          <option value="urllib3" />
+          <option value="werkzeug" />
+          <option value="wtforms" />
+          <option value="zope-event" />
+          <option value="zope-interface" />
+          <option value="bleach" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
