@@ -22,7 +22,7 @@ build/
 *~
 
 # Environment variables
-.env
+../.env
 .env.local
 
 # Database
@@ -50,3 +50,5 @@ htmlcov/
 
 # Docker
 docker-compose.override.yml
+
+.idea

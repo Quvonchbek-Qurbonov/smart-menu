@@ -1,18 +1,24 @@
+import logging
+from sqlite3 import OperationalError
+
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils.database import engine, Base
 from app.routers import auth
 from app.core.config import settings
 
+try:
+    Base.metadata.create_all(bind=engine)
+except OperationalError:
+    logging.info("Cannot connect to database")
 
-# Create database tables
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title=settings.APP_NAME,
     description="Backend API for Smart Menu Application with JWT Authentication",
     version="1.0.0",
-    debug=settings.DEBUG
+    debug=True
 )
 
 # CORS middleware
@@ -25,3 +31,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api")
+
+
+if __name__ == "__main__":
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000)
