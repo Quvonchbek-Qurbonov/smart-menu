@@ -59,15 +59,19 @@ class Restaurant(Base):
     # Relationships
     owner = relationship("Operator", back_populates="restaurants")
     orders = relationship("Order", back_populates="restaurant")
+    categories = relationship("Category", back_populates="restaurant")
 
 
 class Category(Base):
     __tablename__ = "categories"
 
     id = Column(Integer, primary_key=True, index=True)
+    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
     name = Column(String, unique=True, nullable=False)
     icon = Column(String, nullable=False)
+
     # Relationships
+    restaurant = relationship("Restaurant", back_populates="categories")
     menu_items = relationship("Meal", back_populates="category")
 
 
@@ -78,7 +82,7 @@ class Meal(Base):
     name = Column(String, nullable=False)
     price = Column(Float, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"))
-    image_url = Column(String)
+    image_url = Column(String, nullable=False)
 
     # Relationships
     category = relationship("Category", back_populates="menu_items")
@@ -89,6 +93,7 @@ class OrderStatus(str, enum.Enum):
     PREPARING = "preparing"
     READY = "ready"
     CANCELLED = "cancelled"
+
 
 class Order(Base):
     __tablename__ = "order"
@@ -126,6 +131,7 @@ class PaymentStatus(str, enum.Enum):
     PAID = "paid"
     CANCELLED = "cancelled"
 
+
 class Payment(Base):
     __tablename__ = "payment"
     id = Column(Integer, primary_key=True, index=True)
@@ -134,3 +140,15 @@ class Payment(Base):
     cash_payment = Column(Boolean, nullable=False)
     card_number = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class Otp(Base):
+    __tablename__ = "otp"
+    id = Column(Integer, primary_key=True, index=True)
+    otp = Column(String, nullable=False)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    def __init__(self, otp, user_id):
+        self.otp = otp
+        self.user_id = user_id

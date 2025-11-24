@@ -1,1 +1,1 @@
-from .model import User, Operator, Restaurant, Category, Meal, Order, OrderItem, Payment
+from .model import User, Operator, Restaurant, Category, Meal, Order, OrderItem, Payment, Otp

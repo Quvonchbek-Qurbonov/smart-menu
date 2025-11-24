@@ -1,15 +1,18 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+
+from app.schemas.user import Activate, ActivateResponse
 from app.utils.database import get_db
-from app.cruds.user import UserCrud
-from app.models import User
+from app.cruds import UserCrud, OtpCrud
+from app.models import User, Otp
 from app.schemas import Register, RegisterResponse
-from app.utils.auth import (
+from app.utils import (
     verify_password,
     get_password_hash,
     create_access_token,
     create_refresh_token,
-    verify_token
+    verify_token,
+    generate_otp
 )
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
@@ -38,3 +41,10 @@ def register(user_data: Register, db: Session = Depends(get_db)):
         "created_at": user.created_at,
         "updated_at": user.updated_at
     }
+
+@router.post("/register/activate", response_model=ActivateResponse, status_code=status.HTTP_201_CREATED)
+def activate(data: Activate, db: Session = Depends(get_db)):
+    code = generate_otp()
+    otp = Otp(otp=code, user_id=data.user_id)
+    OtpCrud.create(db=db, otp=otp)
+    return {}
