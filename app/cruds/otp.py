@@ -1,11 +1,17 @@
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from app.models import Otp
+from app.models import Otp, User
+from app.utils.email import send_otp
 
 
 class OtpCrud:
     @staticmethod
     def create(db: Session, otp: Otp):
+        user = db.query(User).filter(User.id == otp.user_id).first()
+        try:
+            send_otp(email=user.email, otp=otp.otp)
+        except Exception as e:
+            raise HTTPException(status_code=500, detail="Email is not sent")
         db.add(otp)
         db.commit()
 
@@ -16,6 +22,5 @@ class OtpCrud:
         if otp:
             db.delete(otp)
             db.commit()
-            return True
         else:
             raise HTTPException(404, "OTP not found")

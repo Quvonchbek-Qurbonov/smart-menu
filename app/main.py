@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils.database import engine, Base
-from app.routers import auth
+from app.routers import auth, user
 from app.core.config import settings
 
 try:
@@ -31,6 +31,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api")
+app.include_router(user.router, prefix="/api")
 
 
 if __name__ == "__main__":
