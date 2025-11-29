@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.utils.database import engine, Base
-from app.routers import auth, user, category, meal
+from app.routers import auth, user, operator, restaurant, category, meal
 from app.core.config import settings
 
 try:
@@ -35,6 +35,8 @@ app.include_router(user.router, prefix="/api")
 app.include_router(category.router, prefix="/api")
 app.include_router(meal.router, prefix="/api")
 
+app.include_router(operator.router, prefix="/api")
+app.include_router(restaurant.router, prefix="/api")
 
 
 if __name__ == "__main__":

@@ -18,6 +18,15 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 security = HTTPBearer()
 
 
+@router.post("/login/admin")
+def login_admin(body: Login):
+    email = body.email
+    password = body.password
+    if email =="root" and password =="admin":
+        return {"token": create_access_token(data={"sub": email, "role": "admin"})}
+    raise HTTPException(status_code=404, detail="Invalid email or password")
+
+
 @router.post("/register/user", response_model=RegisterResponse, status_code=status.HTTP_201_CREATED)
 def register(user_data: Register, db: Session = Depends(get_db)):
     UserCrud.check_email(db, user_data.email)
@@ -58,10 +67,10 @@ def verify(data: Verify, db: Session = Depends(get_db)):
     return user
 
 
-@router.post("/register/login", status_code=status.HTTP_201_CREATED)
+@router.post("/login", status_code=status.HTTP_201_CREATED)
 def login(data: Login, db: Session = Depends(get_db)):
     user = UserCrud.login(db=db, email=data.email, password=data.password)
-    data = {"sub": str(user.id)}
+    data = {"sub": str(user.id), "role": "user"}
     token = create_access_token(data=data)
     return {"data": {
         "id": user.id,

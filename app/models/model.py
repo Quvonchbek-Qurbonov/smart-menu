@@ -44,6 +44,15 @@ class Operator(Base):
     # Relationships
     restaurants = relationship("Restaurant", back_populates="owner")
 
+    def __init__(self, full_name, gender, age, email, hashed_password):
+        self.full_name = full_name
+        self.gender = gender
+        self.age = age
+        self.email = email
+        self.hashed_password = hashed_password
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+
 
 class Restaurant(Base):
     __tablename__ = 'restaurant'
@@ -53,13 +62,24 @@ class Restaurant(Base):
     description = Column(Text, nullable=False)
     avatar = Column(String, nullable=False)
     location = Column(String, nullable=False)
-    views = Column(Integer, nullable=False)
-    scans = Column(Integer, nullable=False)
+    views = Column(Integer, nullable=False, default=0)
+    scans = Column(Integer, nullable=False, default=0)
     created_at = Column(DateTime, default=datetime.utcnow)
     # Relationships
     owner = relationship("Operator", back_populates="restaurants")
     orders = relationship("Order", back_populates="restaurant")
     categories = relationship("Category", back_populates="restaurant")
+
+    def __init__(self, name, owner_id, description, avatar, location):
+        self.name = name
+        self.owner_id = owner_id
+        self.description = description
+        self.avatar = avatar
+        self.location = location
+        self.views = 0
+        self.scans = 0
+        self.created_at = datetime.now()
+
 
 
 class Category(Base):
