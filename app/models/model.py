@@ -83,6 +83,8 @@ class Meal(Base):
     price = Column(Float, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"))
     image_url = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+
 
     # Relationships
     category = relationship("Category", back_populates="menu_items")
