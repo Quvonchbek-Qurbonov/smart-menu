@@ -52,3 +52,4 @@ htmlcov/
 docker-compose.override.yml
 
 .idea
+.env
